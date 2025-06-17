@@ -14,7 +14,9 @@ let zero_btn = document.querySelector("#zero");
 let period_btn = document.querySelector("#period");
 let plus_btn = document.querySelector("#plus");
 let equals_btn = document.querySelector("#equals");
+let clear_btn = document.querySelector("#clear");
 let display = document.querySelector('#display');
+
 
 function add(a, b) {
     return a + b;
@@ -47,6 +49,10 @@ function operate(num_1, num_2, oper) {
 
 function populateDisplay(value) {
     display.textContent += value
+}
+
+function clearDisplay() {
+    display.textContent = "";
 }
 
 seven_btn.addEventListener('click', () => {
@@ -142,3 +148,6 @@ equals_btn.addEventListener('click', () => {
         }
     }
 }); 
+clear_btn.addEventListener('click', () => {
+    clearDisplay();
+})

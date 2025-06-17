@@ -73,3 +73,7 @@ body {
 #zero {
     background-color: var(--zero-bg-clr);
 }
+
+#clear {
+    width: 100%;
+}
