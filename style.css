@@ -74,6 +74,17 @@ body {
     background-color: var(--zero-bg-clr);
 }
 
+.bottom-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+#equals {
+    width: 100%;
+}
+
 #clear {
     width: 100%;
 }

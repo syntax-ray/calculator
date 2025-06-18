@@ -15,6 +15,7 @@ let period_btn = document.querySelector("#period");
 let plus_btn = document.querySelector("#plus");
 let equals_btn = document.querySelector("#equals");
 let clear_btn = document.querySelector("#clear");
+let backspace_btn = document.querySelector('#backspace');
 let display = document.querySelector('#display');
 let OPERATORS = ['÷', '×', '-', '+']
 
@@ -345,6 +346,11 @@ function plusClicked() {
     }
 }
 
+function backspaceClicked() {
+    display.textContent = display.textContent.slice(0, display.textContent.length - 1);
+}
+
+backspace_btn.addEventListener('click', () => backspaceClicked());
 seven_btn.addEventListener('click', () => numberClicked(7));
 eight_btn.addEventListener('click', () => numberClicked(8));
 nine_btn.addEventListener('click', () => numberClicked(9));
@@ -415,6 +421,9 @@ document.addEventListener('keydown', (event)=> {
             break;
         case '+':
             plusClicked();
+            break;
+        case 'Backspace':
+            backspaceClicked();
             break;
     }
 })
