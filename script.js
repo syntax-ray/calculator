@@ -69,91 +69,7 @@ function countOperands(text) {
     return count;
 }
 
-seven_btn.addEventListener('click', () => {
-    populateDisplay(7);
-});
-eight_btn.addEventListener('click', () => {
-    populateDisplay(8);
-});
-nine_btn.addEventListener('click', () => {
-    populateDisplay(9);
-});
-divide_btn.addEventListener('click', () => {
-    if (display.textContent.length > 0) {
-        let prev_value = display.textContent[display.textContent.length - 1];
-        let exclusion_list = ['÷', '×', '-', '.', '+'];
-        if (!exclusion_list.includes(prev_value)) {
-            populateDisplay('÷');
-        }
-    }
-});
-four_btn.addEventListener('click', () => {
-    populateDisplay(4);
-});
-five_btn.addEventListener('click', () => {
-    populateDisplay(5);
-});
-six_btn.addEventListener('click', () => {
-    populateDisplay(6);
-});
-times_btn.addEventListener('click', () => {
-    if (display.textContent.length > 0) {
-        let prev_value = display.textContent[display.textContent.length - 1];
-        let exclusion_list = ['÷', '×', '-', '.', '+'];
-        if (!exclusion_list.includes(prev_value)) {
-            populateDisplay('×');
-        }
-    }
-});
-one_btn.addEventListener('click', () => {
-    populateDisplay(1);
-});
-two_btn.addEventListener('click', () => {
-    populateDisplay(2);
-});
-three_btn.addEventListener('click', () => {
-    populateDisplay(3);
-});  
-minus_btn.addEventListener('click', () => {
-    let prev_value = display.textContent[display.textContent.length - 1];
-    let exclusion_list = ['÷', '×', '-', '.', '+'];
-    if (!exclusion_list.includes(prev_value)) {
-        populateDisplay('-');
-    }
-});  
-zero_btn.addEventListener('click', () => {
-    populateDisplay(0);
-});  
-period.addEventListener('click', () => {
-    if (display.textContent.length > 0) {
-        let prev_value = display.textContent[display.textContent.length - 1];
-        let exclusion_list = ['÷', '×', '-', '.', '+'];
-        if (!exclusion_list.includes(prev_value)) {
-            let period_stack = [];
-            let display_content = display.textContent;
-            for (const character of display_content) {
-                if (character === '.') {
-                    period_stack.push('.');
-                } else if (['÷', '×', '-', '+'].includes(character) && period_stack.length  > 0) {
-                    period_stack.pop()
-                }
-            }
-            if (period_stack.length === 0) {
-                populateDisplay('.');
-            }
-        }
-    }
-}); 
-plus_btn.addEventListener('click', () => {
-    if (display.textContent.length > 0) {
-        let prev_value = display.textContent[display.textContent.length - 1];
-        let exclusion_list = ['÷', '×', '-', '.', '+'];
-        if (!exclusion_list.includes(prev_value)) {
-            populateDisplay('+');
-        }
-    }
-});  
-equals_btn.addEventListener('click', () => {
+function evaluateExpression() {
     if (display.textContent.length > 0) {
         let prev_value = display.textContent[display.textContent.length - 1];
         let exclusion_list = ['÷', '×', '-', '.', '+'];
@@ -364,7 +280,141 @@ equals_btn.addEventListener('click', () => {
             display.textContent = currentValue;
         }
     }
-}); 
-clear_btn.addEventListener('click', () => {
-    clearDisplay();
+}
+
+function numberClicked(num) {
+    populateDisplay(num);
+}
+
+function divideClicked() {
+    if (display.textContent.length > 0) {
+        let prev_value = display.textContent[display.textContent.length - 1];
+        let exclusion_list = ['÷', '×', '-', '.', '+'];
+        if (!exclusion_list.includes(prev_value)) {
+            populateDisplay('÷');
+        }
+    }
+}
+
+function timesClicked() {
+    if (display.textContent.length > 0) {
+        let prev_value = display.textContent[display.textContent.length - 1];
+        let exclusion_list = ['÷', '×', '-', '.', '+'];
+        if (!exclusion_list.includes(prev_value)) {
+            populateDisplay('×');
+        }
+    }
+}
+
+function minusClicked() {
+    let prev_value = display.textContent[display.textContent.length - 1];
+    let exclusion_list = ['÷', '×', '-', '.', '+'];
+    if (!exclusion_list.includes(prev_value)) {
+        populateDisplay('-');
+    }
+}
+
+function periodClicked() {
+    if (display.textContent.length > 0) {
+        let prev_value = display.textContent[display.textContent.length - 1];
+        let exclusion_list = ['÷', '×', '-', '.', '+'];
+        if (!exclusion_list.includes(prev_value)) {
+            let period_stack = [];
+            let display_content = display.textContent;
+            for (const character of display_content) {
+                if (character === '.') {
+                    period_stack.push('.');
+                } else if (['÷', '×', '-', '+'].includes(character) && period_stack.length  > 0) {
+                    period_stack.pop()
+                }
+            }
+            if (period_stack.length === 0) {
+                populateDisplay('.');
+            }
+        }
+    }
+}
+
+function plusClicked() {
+    if (display.textContent.length > 0) {
+        let prev_value = display.textContent[display.textContent.length - 1];
+        let exclusion_list = ['÷', '×', '-', '.', '+'];
+        if (!exclusion_list.includes(prev_value)) {
+            populateDisplay('+');
+        }
+    }
+}
+
+seven_btn.addEventListener('click', () => numberClicked(7));
+eight_btn.addEventListener('click', () => numberClicked(8));
+nine_btn.addEventListener('click', () => numberClicked(9));
+divide_btn.addEventListener('click', () => divideClicked());
+four_btn.addEventListener('click', () => numberClicked(4));
+five_btn.addEventListener('click', () => numberClicked(5));
+six_btn.addEventListener('click', () => numberClicked(6));
+times_btn.addEventListener('click', () => timesClicked());
+one_btn.addEventListener('click', () => numberClicked(1));
+two_btn.addEventListener('click', () => numberClicked(2));
+three_btn.addEventListener('click', () => numberClicked(3));  
+minus_btn.addEventListener('click', () => minusClicked());  
+zero_btn.addEventListener('click', () => numberClicked(0));  
+period.addEventListener('click', () => periodClicked()); 
+plus_btn.addEventListener('click', () => plusClicked());  
+equals_btn.addEventListener('click', () => evaluateExpression()); 
+clear_btn.addEventListener('click', () =>  clearDisplay());
+
+document.addEventListener('keydown', (event)=> {
+    switch (event.key) {
+        case 'Enter':
+            evaluateExpression();
+            break;
+        case 'Delete':
+            clearDisplay();
+            break;
+        case '7':
+            numberClicked(7);
+            break;
+        case '8':
+            numberClicked(8);
+            break;
+        case '9':
+            numberClicked(9);
+            break;
+        case '/':
+            divideClicked();
+            break;
+        case '4':
+            numberClicked(4);
+            break;
+        case '5':
+            numberClicked(5);
+            break;
+        case '6':
+            numberClicked(6);
+            break;
+        case '*':
+            timesClicked();
+            break;
+        case '1':
+            numberClicked(1);
+            break;
+        case '2':
+            numberClicked(2);
+            break;
+        case '3':
+            numberClicked(3);
+            break;
+        case '-':
+            minusClicked();
+            break;
+        case '0':
+            numberClicked(0);
+            break;
+        case '.':
+            periodClicked();
+            break;
+        case '+':
+            plusClicked();
+            break;
+    }
 })
