@@ -16,6 +16,7 @@ let plus_btn = document.querySelector("#plus");
 let equals_btn = document.querySelector("#equals");
 let clear_btn = document.querySelector("#clear");
 let display = document.querySelector('#display');
+let OPERATORS = ['÷', '×', '-', '+']
 
 
 function add(a, b) {
@@ -53,6 +54,19 @@ function populateDisplay(value) {
 
 function clearDisplay() {
     display.textContent = "";
+}
+
+function countOperands(text) {
+    let count = 0;
+    if (text[0] === '-') {
+        count = -1;
+    }
+    for (const char of text) {
+        if (OPERATORS.includes(char)) {
+            count += 1;
+        }
+    }
+    return count;
 }
 
 seven_btn.addEventListener('click', () => {
@@ -144,7 +158,210 @@ equals_btn.addEventListener('click', () => {
         let prev_value = display.textContent[display.textContent.length - 1];
         let exclusion_list = ['÷', '×', '-', '.', '+'];
         if (!exclusion_list.includes(prev_value)) {
-            alert("todo");
+            let currentValue = display.textContent
+            while (true) {
+                // handle division
+                while (true) {
+                    if (currentValue.includes('÷')) {
+                        let start = undefined;
+                        let end = undefined;
+                        let position_of_division = currentValue.indexOf('÷');
+
+                        // find the first value.
+                        let i = position_of_division - 1;
+                        let num_1 = '';
+                        while (i >= 0) {
+                            // 456
+                            num_1 = currentValue[i] + num_1
+                            start = i;
+                            i -= 1
+                            if (i < 0 || OPERATORS.includes(currentValue[i])) {
+                                break;
+                            }
+                        }
+                        num_1 = parseFloat(num_1);
+                        
+                        // find the second value
+                        i = position_of_division + 1;
+                        let num_2 = '';
+                        while (i < currentValue.length) {
+                            num_2 += currentValue[i];
+                            i += 1
+                            if (i >= currentValue.length || OPERATORS.includes(currentValue[i])) {
+                                end = i;
+                                break;
+                            }
+                        }
+                        num_2 = parseFloat(num_2);
+                        const result = operate(num_1, num_2, '/');
+                        if (start > 0) {
+                            currentValue = currentValue.slice(0, start) + `${result}` + currentValue.slice(end, currentValue.length);
+                        } else if (start === 0) {
+                            currentValue = `${result}` + currentValue.slice(end, currentValue.length);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                // handle multiplication
+                while (true) {
+                    if (currentValue.includes('×')) {
+                        let start = undefined;
+                        let end = undefined;
+                        let position_of_multiplication = currentValue.indexOf('×');
+
+                        // find the first value.
+                        let i = position_of_multiplication - 1;
+                        let num_1 = '';
+                        while (i >= 0) {
+                            // 456
+                            num_1 = currentValue[i] + num_1
+                            start = i;
+                            i -= 1
+                            if (i < 0 || OPERATORS.includes(currentValue[i])) {
+                                break;
+                            }
+                        }
+                        num_1 = parseFloat(num_1);
+                        
+                        // find the second value
+                        i = position_of_multiplication + 1;
+                        let num_2 = '';
+                        while (i < currentValue.length) {
+                            num_2 += currentValue[i];
+                            i += 1
+                            if (i >= currentValue.length || OPERATORS.includes(currentValue[i])) {
+                                end = i;
+                                break;
+                            }
+                        }
+                        num_2 = parseFloat(num_2);
+                        const result = operate(num_1, num_2, '*');
+                        if (start > 0) {
+                            currentValue = currentValue.slice(0, start) + `${result}` + currentValue.slice(end, currentValue.length);
+                        } else if (start === 0) {
+                            currentValue = `${result}` + currentValue.slice(end, currentValue.length);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                // handle addition
+                while (true) {
+                    if (currentValue.includes('+')) {
+                        let start = undefined;
+                        let end = undefined;
+                        let position_of_addition = currentValue.indexOf('+');
+
+                        // find the first value.
+                        let i = position_of_addition - 1;
+                        let num_1 = '';
+                        while (i >= 0) {
+                            // 456
+                            num_1 = currentValue[i] + num_1
+                            start = i;
+                            i -= 1
+                            if (i < 0 || OPERATORS.includes(currentValue[i])) {
+                                if (i >= 0 && currentValue[i] === '-') {
+                                    num_1 = "-" + num_1;
+                                    start -= 1;
+                                }
+                                break;
+                            }
+                        }
+                        num_1 = parseFloat(num_1);
+                        
+                        // find the second value
+                        i = position_of_addition + 1;
+                        let num_2 = '';
+                        while (i < currentValue.length) {
+                            num_2 += currentValue[i];
+                            i += 1
+                            if (i >= currentValue.length || OPERATORS.includes(currentValue[i])) {
+                                end = i;
+                                break;
+                            }
+                        }
+                        num_2 = parseFloat(num_2);
+                        const result = operate(num_1, num_2, '+');
+                        if (start > 0) {
+                            currentValue = currentValue.slice(0, start) + `${result}` + currentValue.slice(end, currentValue.length);
+                        } else if (start === 0) {
+                            currentValue = `${result}` + currentValue.slice(end, currentValue.length);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                // handle subtraction
+                while (true) {
+                    if (currentValue.includes('-') && countOperands(currentValue) > 0) {
+                        let start = undefined;
+                        let end = undefined;
+                        let position_of_subraction = currentValue.indexOf('-');
+                        let subtraction_operations = 0;
+                        for (let x = 0; x < currentValue.length; x++) {
+                            if (currentValue[x] === '-') {
+                                subtraction_operations += 1;
+                            }
+                        }
+                        if (subtraction_operations > 1) {
+                            for(let y = 1; y < currentValue.length; y++) {
+                                if (currentValue[y] === '-') {
+                                    position_of_subraction = y;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // find the first value.
+                        let i = position_of_subraction - 1;
+                        let num_1 = '';
+                        while (i >= 0) {
+                            // 456
+                            num_1 = currentValue[i] + num_1
+                            start = i;
+                            i -= 1
+                            if (i < 0 || OPERATORS.includes(currentValue[i])) {
+                                if (i >= 0 && currentValue[i] === '-') {
+                                    num_1 = "-" + num_1;
+                                    start -= 1;
+                                }
+                                break;
+                            }
+                        }
+                        num_1 = parseFloat(num_1);
+                        
+                        // find the second value
+                        i = position_of_subraction + 1;
+                        let num_2 = '';
+                        while (i < currentValue.length) {
+                            num_2 += currentValue[i];
+                            i += 1
+                            if (i >= currentValue.length || OPERATORS.includes(currentValue[i])) {
+                                end = i;
+                                break;
+                            }
+                        }
+                        num_2 = parseFloat(num_2);
+                        const result = operate(num_1, num_2, '-');
+                        if (start > 0) {
+                            currentValue = currentValue.slice(0, start) + `${result}` + currentValue.slice(end, currentValue.length);
+                        } else if (start === 0) {
+                            currentValue = `${result}` + currentValue.slice(end, currentValue.length);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (countOperands(currentValue) <= 0) {
+                    break;
+                }
+            }
+            display.textContent = currentValue;
         }
     }
 }); 
